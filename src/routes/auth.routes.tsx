@@ -25,5 +25,5 @@ export function AuthRoutes(){
                 component={SignUp}
             />
         </Navigator>
-    ) ;
+    );
 }
