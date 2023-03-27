@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 export function Home(){
     const [groups, setGroups] = useState(['Costas','Bíceps', 'Tríceps', 'Ombro'])
     const [exercises, setExercises] = useState(['Puxada frontal','Remada curvada', 'Remada unilateral','Levantamento terra'])
-    const [groupSelected, setGroupSelected] = useState('ombro');
+    const [groupSelected, setGroupSelected] = useState('Costas');
 
     return (
         <VStack flex={1}>
@@ -19,7 +19,7 @@ export function Home(){
                 renderItem={({ item }) => (
                     <Group 
                         name={item}
-                        isActive={groupSelected === item}
+                        isActive={String(groupSelected).toLocaleUpperCase() === String(item).toLocaleUpperCase()}
                         onPress={() => setGroupSelected(item)}
                     />
                 )}
@@ -44,7 +44,11 @@ export function Home(){
                 <FlatList
                     data={exercises}
                     keyExtractor={item => item}
-                    renderItem={({item}) => ( <ExerciseCard /> )}
+                    renderItem={({item}) => ( 
+                        <ExerciseCard />
+                    )}
+                    showsVerticalScrollIndicator={false}
+                    _contentContainerStyle={{ paddingBottom:20 }}
                 />
 
             </VStack>
