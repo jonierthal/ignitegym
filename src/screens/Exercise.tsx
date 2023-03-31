@@ -1,9 +1,11 @@
-import { VStack,Icon } from 'native-base';
+import { VStack,Icon, HStack, Heading, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { AppNavgatorRoutesProps } from '@routes/app.routes';
+
+import BodySvg from '@assets/body.svg';
 
 export function Exercise(){
     const navigation = useNavigation<AppNavgatorRoutesProps>();
@@ -18,6 +20,19 @@ export function Exercise(){
                 <TouchableOpacity onPress={handleGoBack}>
                     <Icon as={Feather} name="arrow-left" color="green.500" size={6}/>
                 </TouchableOpacity>
+
+                <HStack justifyContent="space-between" mt={4} mb={8} alignItems="center">
+                    <Heading color="gray.100" fontSize="lg" flexShrink={1}>
+                        Puxada Frontal
+                    </Heading>
+                
+                    <HStack alignItems="center">
+                        <BodySvg />
+                        <Text color="gray.200" ml={1} textTransform="capitalize">
+                            Costas
+                        </Text>
+                    </HStack>
+                </HStack>
             </VStack>
         </VStack>
     );
