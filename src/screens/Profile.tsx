@@ -12,15 +12,21 @@ const PHOTO_SIZE = 33;
 
 export function Profile(){
     const [photoIsLoading, setPhotoIsLoading] = useState(false);
+    const [userPhoto, setUserPhoto] = useState('https://github.com/jonierthal.png');
 
     async function  handleUserPhotoSelect(){
-        await ImagePicker.launchImageLibraryAsync({ //acessar o album
+        const photoSelected = await ImagePicker.launchImageLibraryAsync({ //acessar o album
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             quality: 1, //vai de 0 a 1 a compressão da imagem
             aspect: [4,4],
             allowsEditing: true //permite ao usuário a edição da foto depois de selecioná-lo
-            
-        })
+        });
+
+        if(photoSelected.canceled) {
+            return;
+        }
+
+        setUserPhoto(photoSelected.assets[0].uri);
     }
 
     return (
@@ -39,7 +45,7 @@ export function Profile(){
                         />
                     :
                          <UserPhoto
-                            source={{ uri: 'https://github.com/jonierthal.png'}}
+                            source={{ uri: userPhoto}}
                             alt="Foto do usuário"
                             size={PHOTO_SIZE}
                          />
