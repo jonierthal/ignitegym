@@ -15,18 +15,31 @@ export function Profile(){
     const [userPhoto, setUserPhoto] = useState('https://github.com/jonierthal.png');
 
     async function  handleUserPhotoSelect(){
-        const photoSelected = await ImagePicker.launchImageLibraryAsync({ //acessar o album
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality: 1, //vai de 0 a 1 a compressão da imagem
-            aspect: [4,4],
-            allowsEditing: true //permite ao usuário a edição da foto depois de selecioná-lo
-        });
+        setPhotoIsLoading(true);
 
-        if(photoSelected.canceled) {
-            return;
+        try{
+                const photoSelected = await ImagePicker.launchImageLibraryAsync({ //acessar o album
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    quality: 1, //vai de 0 a 1 a compressão da imagem
+                    aspect: [4,4],
+                    allowsEditing: true //permite ao usuário a edição da foto depois de selecioná-lo
+                });
+        
+                if(photoSelected.canceled) {
+                    return;
+                }
+
+                if(photoSelected.assets[0].uri) {
+                    setUserPhoto(photoSelected.assets[0].uri);
+
+                }
+        
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setPhotoIsLoading(false);
         }
-
-        setUserPhoto(photoSelected.assets[0].uri);
     }
 
     return (
