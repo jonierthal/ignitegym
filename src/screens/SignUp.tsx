@@ -36,7 +36,16 @@ export function SignUp() {
     }
 
     function handleSignUp({ name, email, password, password_confirm}: FormDataProps) {
-        console.log(name, email, password, password_confirm);
+        fetch('http://192.168.0.54:3333/users', {
+            method: 'POST',
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name, email, password
+            })
+        });
     }
 
     return (
@@ -136,7 +145,7 @@ export function SignUp() {
                     <Button 
                         title="Voltar para o login" 
                         variant="outline"
-                        mt={24}
+                        mt={12}
                         onPress={handleGoBack}
                     />
 
