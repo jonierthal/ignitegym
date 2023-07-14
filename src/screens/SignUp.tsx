@@ -49,7 +49,6 @@ export function SignUp() {
                 Alert.alert(error.response?.data.message);
             }
         }
-
     }
 
     return (
