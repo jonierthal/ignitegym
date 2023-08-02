@@ -1,82 +1,102 @@
-import { VStack, Image, Text, Center, Heading, ScrollView } from 'native-base';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigation } from "@react-navigation/native";
+import { VStack, Image, Text, Center, Heading, ScrollView } from "native-base";
+
+import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 
 import LogoSvg from '@assets/logo.svg';
 import BackgroundImg from '@assets/background.png';
 
-import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
+import { Input } from "@components/Input";
+import { Button } from "@components/Button";
 
-import { Input } from '@components/Input';
-import { Button } from '@components/Button';
-import { useNavigation } from '@react-navigation/native';
+type FormData = {
+  email: string;
+  password: string;
+}
 
 export function SignIn() {
 
-    const navigation = useNavigation<AuthNavigatorRoutesProps>();
+  const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
-    function handleNewAccount() {
-        navigation.navigate('singUp');
-    }
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>()
 
-    return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false}>
-            <VStack 
-                flex={1} 
-                px={10} 
-                pb={16}
-            >
-                <Image 
-                    source={BackgroundImg}
-                    defaultSource={BackgroundImg}
-                    alt="Pessoas treinando na academia"
-                    resizeMode="contain"
-                    position="absolute"
-                />
+  function handleNewAccount() {
+    navigation.navigate('signUp');
+  }
 
-                <Center my={24}>
-                    <LogoSvg />
+  function handleSignIn({ email, password }: FormData){
+    console.log(email, password)
+  }
 
-                    <Text color="gray.100" fontSize={"sm"}>
-                        Treine sua mente e o seu corpo
-                    </Text>
-                </Center>
+  return (
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        <VStack flex={1} px={10} pb={16}>
+        <Image 
+          source={BackgroundImg}
+          defaultSource={BackgroundImg}
+          alt="Pessoas treinando"
+          resizeMode="contain"
+          position="absolute"
+        />
 
-                <Center>
-                    <Heading color="gray.100" fontSize="xl" mb={6} fontFamily="heading">
-                        Acesse sua conta
-                    </Heading>
+        <Center my={24}>
+          <LogoSvg />
 
-                    <Input 
-                        placeholder="E-mail"
-                        keyboardType='email-address'
-                        autoCapitalize='none'
+          <Text color="gray.100" fontSize="sm">
+            Treine sua mente e o seu corpo.
+          </Text>
+        </Center>
 
-                    />
-                    <Input 
-                        placeholder="Senha"
-                        secureTextEntry
-                    />
+        <Center>
+          <Heading color="gray.100" fontSize="xl" mb={6} fontFamily="heading">
+            Acesse a conta
+          </Heading>
 
-                    <Button title="Acessar" />
+          <Controller 
+            control={control}
+            name="email"
+            rules={{ required: 'Informe o e-mail' }}
+            render={({ field: { onChange } }) => (
+              <Input 
+                placeholder="E-mail" 
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={onChange}
+                errorMessage={errors.email?.message}
+              />
+            )}
+          />
+          
+          <Controller 
+            control={control}
+            name="password"
+            rules={{ required: 'Informe a senha' }}
+            render={({ field: { onChange } }) => (
+              <Input 
+                placeholder="Senha" 
+                secureTextEntry
+                onChangeText={onChange}
+                errorMessage={errors.password?.message}
+              />
+            )}
+          />
 
-                </Center>
+          <Button title="Acessar" onPress={handleSubmit(handleSignIn)} />
+        </Center>
 
-                <Center mt={24}>
-                    <Text
-                        color="gray.100"
-                        fontSize="sm"
-                        mb={3}
-                        fontFamily="body"
-                    >
-                        Ainda não tem acesso ?
-                    </Text>
-                    <Button 
-                        title="Criar Conta" 
-                        variant="outline"
-                        onPress={handleNewAccount}
-                    />
-                </Center>
+        <Center mt={24}>
+          <Text color="gray.100" fontSize="sm" mb={3} fontFamily="body">
+            Ainda não tem acesso?
+          </Text>
 
-            </VStack>
-        </ScrollView>
-    );
+          <Button 
+            title="Criar Conta" 
+            variant="outline"
+            onPress={handleNewAccount}
+          />
+        </Center>
+      </VStack>
+    </ScrollView>
+  );
 }
