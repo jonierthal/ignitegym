@@ -43,6 +43,7 @@ export function Home(){
     async function fetchExercicesByGroup(){
         try {
             const response = await api.get(`/exercises/bygroup/${groupSelected}`);
+            console.log(response.data);
             setExercises(response.data);
 
         } catch(error){
