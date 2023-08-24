@@ -21,8 +21,8 @@ export function Home(){
     const toast = useToast();
     const navigation = useNavigation<AppNavgatorRoutesProps>();
 
-    function handleOpenExerciseDetails(){
-        navigation.navigate('exercise')
+    function handleOpenExerciseDetails(exerciseId: string){
+        navigation.navigate('exercise', { exerciseId })
     }
     
     async function fetchGroups(){
@@ -47,7 +47,6 @@ export function Home(){
             setIsLoading(true);
 
             const response = await api.get(`/exercises/bygroup/${groupSelected}`);
-            console.log(response.data);
             setExercises(response.data);
 
         } catch(error){
@@ -113,7 +112,7 @@ export function Home(){
                     keyExtractor={item => item.id}
                     renderItem={({item}) => ( 
                         <ExerciseCard 
-                            onPress={handleOpenExerciseDetails}
+                            onPress={() => handleOpenExerciseDetails(item.id)}
                             data={item}
                         />
                     )}

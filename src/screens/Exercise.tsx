@@ -1,7 +1,7 @@
 import { VStack,Icon, HStack, Heading, Text, Image, Box, ScrollView } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { AppNavgatorRoutesProps } from '@routes/app.routes';
 
@@ -10,8 +10,17 @@ import SeriesSvg from '@assets/series.svg';
 import RepetionsSvg from '@assets/repetitions.svg';
 import { Button } from '@components/Button';
 
+type RouteParamsProps = {
+    exerciseId: string;
+}
+
 export function Exercise(){
     const navigation = useNavigation<AppNavgatorRoutesProps>();
+
+    const route = useRoute();
+
+    const { exerciseId } = route.params as RouteParamsProps;
+    console.log("id =>", exerciseId);
 
     function handleGoBack(){
         navigation.goBack();
