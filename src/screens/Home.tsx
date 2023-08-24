@@ -10,8 +10,10 @@ import { api } from '@services/api';
 import { VStack, FlatList, HStack, Heading, Text, useToast } from 'native-base';
 import { AppError } from '@utils/AppError';
 import { ExerciseDTO } from '@dtos/ExerciseDTO';
+import { Loading } from '@components/Loading';
 
 export function Home(){
+    const [isLoading, setIsLoading] = useState(true);
     const [groups, setGroups] = useState<string[]>([])
     const [exercises, setExercises] = useState<ExerciseDTO[]>([])
     const [groupSelected, setGroupSelected] = useState('Costas');
@@ -42,6 +44,8 @@ export function Home(){
 
     async function fetchExercicesByGroup(){
         try {
+            setIsLoading(true);
+
             const response = await api.get(`/exercises/bygroup/${groupSelected}`);
             console.log(response.data);
             setExercises(response.data);
@@ -55,6 +59,8 @@ export function Home(){
                 placement: 'top',
                 bgColor: 'red.500'
             });
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -87,6 +93,9 @@ export function Home(){
                 maxH={10}
                 minH={10}
             />  
+
+            {
+                isLoading ? <Loading/> : 
             <VStack flex={1} px={8}>   
                 <HStack justifyContent="space-between">
                     <Heading color="gray.200" fontSize="md">
@@ -113,6 +122,7 @@ export function Home(){
                 />
 
             </VStack>
+            }
         </VStack>
     );
 }
