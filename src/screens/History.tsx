@@ -6,20 +6,12 @@ import { HistoryCard } from '@components/HistoryCard';
 import { AppError } from '@utils/AppError';
 import { api } from '@services/api';
 import { useFocusEffect } from '@react-navigation/native';
+import { HistoryByDayDTO } from '@dtos/HistoryGroupByDayDTO';
 
 
 export function History(){
     const [isLoading, setIsLoading] = useState(true);
-    const [exercises,setExercises] = useState([
-        { 
-            title: "26.08.22",
-            data: ["Puxada frontal", "Remada unilateral"]
-        },
-        {
-            title: "27.08.22",
-            data: ["Puxada frontal"]
-        }
-    ]);
+    const [exercises,setExercises] = useState<HistoryByDayDTO[]>([ ]);
 
     const toast = useToast();
 
@@ -27,7 +19,7 @@ export function History(){
         try {
             setIsLoading(true);
             const response = await api.get('/history');
-            console.log(response.data);
+            setExercises(response.data);
         } catch (error) {
             const isAppError = error instanceof AppError;
             const title = isAppError  ? error.message : 'Não foi possível carregar o histórico.';
@@ -51,7 +43,7 @@ export function History(){
             <ScreenHeader title="Histórico de exercícios"/>
             <SectionList
                 sections={exercises}
-                keyExtractor={item => item}
+                keyExtractor={item => item.id}
                 renderItem={({ item }) => (
                     <HistoryCard/>
                 )}
